@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Super simple game: Shoot the circle</title>
+		<script>
+		  function draw () {
+		    var canvas = document.getElementById('circle');
+		    if (canvas.getContext) {
+		      var context = canvas.getContext('2d');
+				var body = document.getElementsByTagName('body')[0];
+				canvas.width=body.clientWidth;
+				canvas.height=body.clientHeight;
+
+				var radius = 20;
+				var y = parseInt(canvas.height * Math.random())
+				var x = parseInt(canvas.width  * Math.random());
+
+				console.log(x, y)
+
+				context.lineWidth = 20;
+				context.strokeStyle = 'red';
+				context.fillStyle = "red";
+				context.beginPath();
+				context.arc(x,y,radius,0,2*Math.PI,true);
+				context.fill();
+				context.stroke();
+		    } else {
+		      // put code for browsers that don’t support canvas here
+		      alert("No canvas");
+		    }
+		  }
+		</script>
+		<style>
+		body{text-align:center;margin:0 auto;font-family:monospace}
+		canvas{cursor:crosshair;border:1px solid #ddd;height:600px}
+		</style>
+	</head>
+	<body onload="draw()">
+		<p><a href="/">home</a>
+		<div id="intro">
+		<h1>shoot the circle</h1>
+		</div>
+		<canvas id="circle" onclick="window.location.reload()"></canvas>
+	</body>
+</html>

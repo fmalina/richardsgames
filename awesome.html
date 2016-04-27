@@ -1,0 +1,41 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>Awesome game</title>
+<script>
+function game(){
+    var ok = confirm("Are you sure❓");
+    if (!ok) {
+        alert("💩 Not really, you're rubbish.");
+    } else {
+        var ok1 = confirm("😏 Positively sure❓");
+        if (!ok1) {
+            alert("Not really, you're a quitter. Flush yourself down this toilet 🚽.");
+        } else {
+            var ok2 = confirm("😜 Negatively sure❓");
+            if (ok2) {
+                alert("💥 Boom, that was a trick! ");
+            } else {
+                alert("🎉 Yes, you are awesome! Here's a present 🎁");
+            }
+        }
+    }
+}
+</script>
+<style>
+body{text-align:center;font-family:monospace;padding:2em}
+button{padding:.5em 1em;font-size:2em;
+    background:green;color:white;border:0;border-radius:2em}
+button{animation: blinker 2s linear infinite}
+@keyframes blinker { 50% { opacity: .3 }}
+</style>
+</head>
+<body>
+<p><a href="/">home</a>
+<h1>The Awesome Story</h1>
+<p>Once there was a guy and he thought he was really <b>A W E S O M E</b>.<br>
+But everyone thought he wasn't. Find out the truth.
+<p>push me<br>↓<br>
+<button onclick="return game()">I am awesome 😎</button>
+</body>
+</html>
