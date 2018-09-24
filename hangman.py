@@ -1,11 +1,10 @@
+#!/usr/bin/python3
 """
 A terminal based game of Hangman.
 
 1. Install Python 3
 2. Open Terminal
-3. Play with:
-
-    python3 hangman.py
+3. To play, execute this file by typing: python3 hangman.py
 """
 
 import urllib.request
