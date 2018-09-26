@@ -112,9 +112,15 @@ def play(word):
 
 
 if __name__ == '__main__':
-    print("Hey, let's play hangman.")
-    print()
-    words = get_dictionary()
-    guess = random.choice(words).decode().upper()
-    print("I have a word in mind. It has %s characters." % len(guess))
-    play(guess)
+    try:
+        print("Hey, let's play hangman.")
+        print()
+        words = get_dictionary()
+        guess = random.choice(words).upper()
+        print("I have a word in mind. It has %s characters." % len(guess))
+        play(guess)
+    except KeyboardInterrupt:
+        print()
+        print()
+        print('Scared of death? Ha Ha Ha Ha Ha')
+
