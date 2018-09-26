@@ -41,16 +41,27 @@ pic[8] = copy(pic[7])
 pic[8][5] = '|      / \\'
 pic[8][3] = '|       😵'
 
-for k,v in list(pic.items())[1:]:
+for k, v in list(pic.items())[1:]:
     pic[k] = '\n'.join(v)
 
 
 def get_dictionary():
-    """Download a dictionary and get a list of words."""
-    word_site = "http://svnweb.freebsd.org/csrg/share/dict/words?view=co&content-type=text/plain"
+    """Return a list of words.
 
-    response = urllib.request.urlopen(word_site)
-    return response.read().splitlines()
+    Download a dictionary and cache it locally.
+    """
+    url = "http://svnweb.freebsd.org/csrg/share/dict/words?view=co&content-type=text/plain"
+
+    with open('dictionary.txt', 'a+') as f:
+        f.seek(0)
+        words = f.read()
+        if not words:
+            response = urllib.request.urlopen(url)
+            words = response.read().decode('utf-8')
+            f.write(words)
+            f.truncate()
+
+    return words.splitlines()
 
 
 def render_word(word, tried_letters):
