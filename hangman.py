@@ -81,7 +81,7 @@ def render_word(word, tried_letters):
 
 
 def play(word):
-    """Play hangman"""
+    """Play hangman."""
     tried = []
     bad_guesses = 0
     while True:
@@ -92,10 +92,10 @@ def play(word):
         if letter not in word:
             bad_guesses += 1
             print('Wrong, try again. (%sx)' % bad_guesses)
+            print(pic[bad_guesses])
         else:
-            print('👍 Currect, try again.')
+            print('👍 Correct, guess another.')
 
-        print(pic[bad_guesses])
         print()
         rendered = render_word(word, tried)
         print(rendered)
