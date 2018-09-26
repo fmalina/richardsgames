@@ -9,6 +9,7 @@ A terminal based game of Hangman.
 
 import urllib.request
 import random
+from copy import copy
 
 
 pic = {}
@@ -22,78 +23,26 @@ Lovely Day!
      |}
      ||
 """
-pic[1] = """
+pic[1] = [''] + 6 * ['|']
+pic[2] = copy(pic[1])
+pic[2][1] = '__________'
+pic[2][2] = '|       |'
+pic[3] = copy(pic[2])
+pic[3][3] = '|       O'
+pic[4] = copy(pic[3])
+pic[4][4] = '|       |'
+pic[5] = copy(pic[4])
+pic[5][4] = '|      /|'
+pic[6] = copy(pic[5])
+pic[6][4] = '|      /|\\'
+pic[7] = copy(pic[6])
+pic[7][5] = '|      /'
+pic[8] = copy(pic[7])
+pic[8][5] = '|      / \\'
+pic[8][3] = '|       😵'
 
-|
-|
-|
-|
-|
-|
-"""
-pic[2] = """
-__________
-|       |
-|
-|
-|
-|
-|
-"""
-pic[3] = """
-__________
-|       |
-|       O
-|
-|
-|
-|
-"""
-pic[4] = """
-__________
-|       |
-|       O
-|       |
-|
-|
-|
-"""
-pic[5] = """
-__________
-|       |
-|       O
-|      /|
-|
-|
-|
-"""
-pic[6] = """
-__________
-|       |
-|       O
-|      /|\\
-|
-|
-|
-"""
-pic[7] = """
-__________
-|       |
-|       O
-|      /|\\
-|      /
-|
-|
-"""
-pic[8] = """
-__________
-|       |
-|       😵
-|      /|\\
-|      / \\
-|
-|
-"""
+for k,v in list(pic.items())[1:]:
+    pic[k] = '\n'.join(v)
 
 
 def get_dictionary():
