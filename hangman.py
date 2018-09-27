@@ -9,6 +9,7 @@ A terminal based game of Hangman.
 
 import urllib.request
 import random
+import time
 from copy import copy
 
 
@@ -45,8 +46,8 @@ for k, v in list(pic.items())[1:]:
     pic[k] = '\n'.join(v)
 
 
-def get_dictionary():
-    """Return a list of words.
+def get_dictionary_word(full_list=False):
+    """Return a random word, or a full list if needed.
 
     Download a dictionary and cache it locally.
     """
@@ -60,8 +61,12 @@ def get_dictionary():
             words = response.read().decode('utf-8')
             f.write(words)
             f.truncate()
-
-    return words.splitlines()
+        else:
+            # make it appear, that it's thinking for a sec...
+            time.sleep(random.random() * 1.5 + random.random())
+    if full_list:
+        return words.splitlines()
+    return random.choice(words).upper()
 
 
 def render_word(word, tried_letters):
@@ -115,10 +120,9 @@ if __name__ == '__main__':
     try:
         print("Hey, let's play hangman.")
         print()
-        words = get_dictionary()
-        guess = random.choice(words).upper()
-        print("I have a word in mind. It has %s characters." % len(guess))
-        play(guess)
+        word = get_dictionary_word()
+        print("I have a word in mind. It has %s characters." % len(word))
+        play(word)
     except KeyboardInterrupt:
         print()
         print()
