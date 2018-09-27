@@ -14,8 +14,8 @@
     .gallery a:hover img{border-color:black}
     .button{background:green;color:white;font-size:large;border-radius:.5em;
         padding:.5em 1em;display:inline-block;text-decoration:none}
-    #rollover #guy{display:none;font-size:200px;position:fixed;bottom:0;right:0}
-    #rollover:hover #guy{display:block}
+    .rollover #guy{display:none;font-size:200px;position:fixed;bottom:0;right:0}
+    .rollover:hover #guy{display:block}
     footer{clear:both;padding-top:2em;color:gray}
     h2,p{clear:both}
     </style>
@@ -26,8 +26,8 @@
 
         <h2>Games</h2>
         <ul class="gallery games">
-            <li><a href="hangman.py" title="Hangman game written in Python">Hangman</a>
-            <li><a id="rollover" href="awesome.html">Awesome game <div id="guy">😎</div></a>
+            <li><a href="hangman.py" title="Hangman game written in Python">The Hangman</a>
+            <li><a href="awesome.html" class="rollover">Awesome game <div id="guy">😎</div></a>
             <li><a href="shoot-game.html">Shooting game</a>
             <li><a href="scoring-board.html">Family scoring board</a>
             <li><a href="heart.html" title="drawn in Javascript">Heart</a>
