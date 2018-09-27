@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 A terminal based game of Hangman.
 
@@ -9,6 +9,8 @@ A terminal based game of Hangman.
 
 import urllib.request
 import random
+import time
+import json
 from copy import copy
 
 
@@ -45,8 +47,8 @@ for k, v in list(pic.items())[1:]:
     pic[k] = '\n'.join(v)
 
 
-def get_dictionary():
-    """Return a list of words.
+def get_dictionary_word(full_list=False):
+    """Return a random word, or a full list if needed.
 
     Download a dictionary and cache it locally.
     """
@@ -60,8 +62,24 @@ def get_dictionary():
             words = response.read().decode('utf-8')
             f.write(words)
             f.truncate()
+        else:
+            # make it appear, that it's thinking for a sec...
+            time.sleep(random.random() * 1.5 + random.random())
+    words = words.splitlines()
+    if full_list:
+        return words
+    return random.choice(words).upper()
 
-    return words.splitlines()
+
+def get_word_definition(word):
+    """Get word definition failing silently."""
+    url = 'http://api.urbandictionary.com/v0/define?term=%s' % word
+    try:
+        response = urllib.request.urlopen(url)
+        data = json.loads(response.read())
+        return data['list'][0]['definition']
+    except Exception as e:
+        return
 
 
 def render_word(word, tried_letters):
@@ -94,20 +112,31 @@ def play(word):
             print('Wrong, try again. (%sx)' % bad_guesses)
             print(pic[bad_guesses])
         else:
+            if bad_guesses == 0:
+                print(pic[0])
             print('👍 Correct, guess another.')
 
         print()
         rendered = render_word(word, tried)
         print(rendered)
-        if bad_guesses >= 8:
+        lost = bad_guesses >= 8
+        won = '_' not in rendered
+        if lost:
             print()
             print('⚰️  You died.')
             print('The word was: %s' % word)
-            exit()
-        if '_' not in rendered:
+        if won:
             print()
             print('🎉 You win!')
             print()
+        if won or lost:
+            definition = get_word_definition(word)
+            if definition:
+                print()
+                print(word.upper())
+                print('~' * len(word))
+                print(definition)
+                print()
             exit()
 
 
@@ -115,12 +144,10 @@ if __name__ == '__main__':
     try:
         print("Hey, let's play hangman.")
         print()
-        words = get_dictionary()
-        guess = random.choice(words).upper()
-        print("I have a word in mind. It has %s characters." % len(guess))
-        play(guess)
+        word = get_dictionary_word()
+        print("I have a word in mind. It has %s characters." % len(word))
+        play(word)
     except KeyboardInterrupt:
         print()
         print()
         print('Scared of death? Ha Ha Ha Ha Ha')
-
