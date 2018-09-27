@@ -10,6 +10,7 @@ A terminal based game of Hangman.
 import urllib.request
 import random
 import time
+import json
 from copy import copy
 
 
@@ -64,9 +65,21 @@ def get_dictionary_word(full_list=False):
         else:
             # make it appear, that it's thinking for a sec...
             time.sleep(random.random() * 1.5 + random.random())
+    words = words.splitlines()
     if full_list:
-        return words.splitlines()
+        return words
     return random.choice(words).upper()
+
+
+def get_word_definition(word):
+    """Get word definition failing silently."""
+    url = 'http://api.urbandictionary.com/v0/define?term=%s' % word
+    try:
+        response = urllib.request.urlopen(url)
+        data = json.loads(response.read())
+        return data['list'][0]['definition']
+    except Exception as e:
+        return
 
 
 def render_word(word, tried_letters):
@@ -99,20 +112,31 @@ def play(word):
             print('Wrong, try again. (%sx)' % bad_guesses)
             print(pic[bad_guesses])
         else:
+            if bad_guesses == 0:
+                print(pic[0])
             print('👍 Correct, guess another.')
 
         print()
         rendered = render_word(word, tried)
         print(rendered)
-        if bad_guesses >= 8:
+        lost = bad_guesses >= 8
+        won = '_' not in rendered
+        if lost:
             print()
             print('⚰️  You died.')
             print('The word was: %s' % word)
-            exit()
-        if '_' not in rendered:
+        if won:
             print()
             print('🎉 You win!')
             print()
+        if won or lost:
+            definition = get_word_definition(word)
+            if definition:
+                print()
+                print(word.upper())
+                print('~' * len(word))
+                print(definition)
+                print()
             exit()
 
 
@@ -127,4 +151,3 @@ if __name__ == '__main__':
         print()
         print()
         print('Scared of death? Ha Ha Ha Ha Ha')
-
