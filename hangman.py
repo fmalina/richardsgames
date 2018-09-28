@@ -101,53 +101,52 @@ def render_word(word, tried_letters):
 def play(word):
     """Play hangman."""
     tried = []
-    bad_guesses = 0
+    bad_guesses = []
     while True:
-        print()
-        letter = input("Enter one character to guess the word: ").upper()
+        letter = input("\nEnter one character to guess the word. Press Enter: ").upper()
         print()
         tried.append(letter.upper())
         if letter not in word:
-            bad_guesses += 1
-            print('Wrong, try again. (%sx)' % bad_guesses)
-            print(pic[bad_guesses])
+            bad_guesses.append(letter)
+            print('Wrong, try again. (%sx)' % len(bad_guesses))
+            print(pic[len(bad_guesses)])
         else:
-            if bad_guesses == 0:
-                print(pic[0])
             print('👍 Correct, guess another.')
-
-        print()
+            if len(bad_guesses) == 0 and len(tried) == 1:
+                print(pic[0])
         rendered = render_word(word, tried)
-        print(rendered)
-        lost = bad_guesses >= 8
+        render_bad_guesses = ''
+        if bad_guesses:
+            render_bad_guesses = '    NOT: ' + ', '.join(bad_guesses)
+        print('\n' + rendered + render_bad_guesses)
+        lost = len(bad_guesses) >= 8
         won = '_' not in rendered
         if lost:
-            print()
-            print('⚰️  You died.')
+            print('\n⚰️  You died.')
             print('The word was: %s' % word)
         if won:
-            print()
-            print('🎉 You win!')
-            print()
+            print('\n🎉 You win!\n')
         if won or lost:
             definition = get_word_definition(word)
             if definition:
-                print()
-                print(word.upper())
+                print('\n' + word.upper())
                 print('~' * len(word))
-                print(definition)
-                print()
-            exit()
+                print(definition + '\n')
+            return
 
 
 if __name__ == '__main__':
     try:
+        play_again = True
         print("Hey, let's play hangman.")
-        print()
-        word = get_dictionary_word()
-        print("I have a word in mind. It has %s characters." % len(word))
-        play(word)
+        while play_again:
+            word = get_dictionary_word()
+            print("\nI have a word in mind. It has %s characters." % len(word))
+            print('\n%s\n' % render_word(word, []))
+            play(word)
+            print("\nWould you like to play again? y/yes + Enter")
+            response = input("> ").lower()
+            if response not in ("yes", "y"):
+                play_again = False
     except KeyboardInterrupt:
-        print()
-        print()
-        print('Scared of death? Ha Ha Ha Ha Ha')
+        print('\n\nScared of death? Ha Ha Ha Ha Ha')
