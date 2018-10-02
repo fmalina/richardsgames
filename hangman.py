@@ -52,7 +52,8 @@ def get_dictionary_word(full_list=False):
 
     Download a dictionary and cache it locally.
     """
-    url = "http://svnweb.freebsd.org/csrg/share/dict/words?view=co&content-type=text/plain"
+    url = 'http://svnweb.freebsd.org/csrg/share/dict/words' + \
+          '?view=co&content-type=text/plain'
 
     with open('dictionary.txt', 'a+') as f:
         f.seek(0)
@@ -101,25 +102,28 @@ def render_word(word, tried_letters):
 def play(word):
     """Play hangman."""
     tried = []
-    bad_guesses = 0
+    bad_guesses = []
     while True:
         print()
-        letter = input("Enter one character to guess the word: ").upper()
+        letter = input(
+            "Enter one character to guess the word. Press Enter: ").upper()
         print()
         tried.append(letter.upper())
         if letter not in word:
-            bad_guesses += 1
-            print('Wrong, try again. (%sx)' % bad_guesses)
-            print(pic[bad_guesses])
+            bad_guesses.append(letter)
+            print('Wrong, try again. (%sx)' % len(bad_guesses))
+            print(pic[len(bad_guesses)])
         else:
-            if bad_guesses == 0:
-                print(pic[0])
             print('👍 Correct, guess another.')
-
-        print()
+            if len(bad_guesses) == 0 and len(tried) == 1:
+                print(pic[0])
         rendered = render_word(word, tried)
-        print(rendered)
-        lost = bad_guesses >= 8
+        render_bad_guesses = ''
+        if bad_guesses:
+            render_bad_guesses = '    NOT: ' + ', '.join(bad_guesses)
+        print()
+        print(rendered + render_bad_guesses)
+        lost = len(bad_guesses) >= 8
         won = '_' not in rendered
         if lost:
             print()
@@ -137,16 +141,26 @@ def play(word):
                 print('~' * len(word))
                 print(definition)
                 print()
-            exit()
+            return
 
 
 if __name__ == '__main__':
     try:
+        play_again = True
         print("Hey, let's play hangman.")
-        print()
-        word = get_dictionary_word()
-        print("I have a word in mind. It has %s characters." % len(word))
-        play(word)
+        while play_again:
+            word = get_dictionary_word()
+            print()
+            print("I have a word in mind. It has %s characters." % len(word))
+            print()
+            print(render_word(word, []))
+            print()
+            play(word)
+            print()
+            print("Would you like to play again? y/yes + Enter")
+            response = input("> ").lower()
+            if response not in ("yes", "y"):
+                play_again = False
     except KeyboardInterrupt:
         print()
         print()
