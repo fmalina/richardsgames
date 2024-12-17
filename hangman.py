@@ -18,9 +18,9 @@ pic = {}
 pic[0] = """
 Lovely Day!
 
-  \/ \/\/
-   \/ \//
-    \ //
+  \\/ \\/\\/
+   \\/ \\//
+    \\ //
      ||
      |}
      ||
@@ -52,7 +52,7 @@ def get_dictionary_word(full_list=False):
 
     Download a dictionary and cache it locally.
     """
-    url = 'http://svnweb.freebsd.org/csrg/share/dict/words' + \
+    url = 'https://svnweb.freebsd.org/csrg/share/dict/words' + \
           '?view=co&content-type=text/plain'
 
     with open('dictionary.txt', 'a+') as f:
@@ -74,7 +74,7 @@ def get_dictionary_word(full_list=False):
 
 def get_word_definition(word):
     """Get word definition failing silently."""
-    url = 'http://api.urbandictionary.com/v0/define?term=%s' % word
+    url = 'https://api.urbandictionary.com/v0/define?term=%s' % word
     try:
         response = urllib.request.urlopen(url)
         data = json.loads(response.read())
