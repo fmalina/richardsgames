@@ -52,8 +52,7 @@ def get_dictionary_word(full_list=False):
 
     Download a dictionary and cache it locally.
     """
-    url = 'https://svnweb.freebsd.org/csrg/share/dict/words' + \
-          '?view=co&content-type=text/plain'
+    url = 'https://raw.githubusercontent.com/fmalina/richardsgames/refs/heads/master/dictionary.txt'
 
     with open('dictionary.txt', 'a+') as f:
         f.seek(0)
